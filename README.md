@@ -65,6 +65,7 @@ In the portfolio, there is NO delivery on rebalancing date, and the daily return
 
 #### Target vol (volatility):
 An exponentially weighted model is used to compute the portfolio vol. The model adopts a 21-period lookback window and a smoothing factor of 2. 
+
 $`\text{Daily vol}_{\text{i}} = \sqrt{(1 - \frac{2}{N + 1}) * \text{Daily vol}^2_{\text{i-1}} + \frac{2}{N + 1} * \text{Simple vol}^2_{\text{i}}}`$
 
 Where:
