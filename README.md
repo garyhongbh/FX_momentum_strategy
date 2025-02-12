@@ -80,7 +80,7 @@ Where:
 - N: no. of periods in lookback window
 - Simple vol: calculated using previous 21-days of daily return with sample standard deviation formula
 
-The initial period Daily vol is set to be equal to Simple vol in the same period. For standardization, daily vol computed via the exponentially weighted model is being annualized by multiplying $ \sqrt{252} $.
+The initial period Daily vol is set to be equal to Simple vol in the same period. For standardization, daily vol computed via the exponentially weighted model is being annualized by multiplying $` \sqrt{252} `$.
 
 
 ### Step 3: Index value computation
