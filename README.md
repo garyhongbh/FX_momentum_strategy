@@ -60,7 +60,8 @@ In the portfolio, there is NO delivery on rebalancing date, and the daily return
 1. The portfolio forward points are computed by taking the difference of forward points for the pair of 
     forwards. The formula is subject to the trade direction (i.e. RMB or USD strengths).
 
-2. Daily return is calculated as $`\text{Daily ret}_{\text{i}} = \frac{\text{Port forward points}_{\text{i}} - \text{Port forward points}_{\text{i-1}}/ 10000}{\text{USD/CNH}_{\text{i-1}}}`$
+2. Daily return is calculated as
+   $`\text{Daily ret}_{\text{i}} = \frac{\text{Port forward points}_{\text{i}} - \text{Port forward points}_{\text{i-1}}/ 10000}{\text{USD/CNH}_{\text{i-1}}}`$
 
 
 #### Target vol (volatility):
