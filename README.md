@@ -25,7 +25,7 @@ To figure out if the portfolio should long or short forward contracts, it is imp
 #### Layer 1: 
 The first step is to compute the CPI difference between China and U.S. (i.e. China CPI - U.S. CPI) for every calendar months, the result are displayed in the 'CPI_diff' column in df (i.e. variable name in Python script). Next, the programme computes the exponential moving average (EMA) of CPI difference, which is applied using a 12-period lookback window and a smoothing factor of 2. The results are shown in 'EMA' column in df and the formula is given by
 
-$`\text{EMA}_{\text{i}} = \frac{2}{N + 1} * \text{CPI diff}_{\text{i}} + (1 - \frac{2}{N + 1}) * \text{CPI diff}_{\text{i-1}}`$
+$`\text{EMA}_{\text{i}} = \frac{2}{N + 1} * \text{CPI diff}_{\text{i}} + (1 - \frac{2}{N + 1}) * \text{CPI diff}_{\text{i-1}}  `$
 
 Where:
 - N: no. of periods in lookback window
@@ -60,22 +60,44 @@ In the portfolio, there is NO delivery on rebalancing date, and the daily return
 1. The portfolio forward points are computed by taking the difference of forward points for the pair of 
     forwards. The formula is subject to the trade direction (i.e. RMB or USD strengths).
 
-2. Daily return is calculated as
-    $`\text{Daily ret}_{\text{i}} = \frac{\text{Port forward points}_{\text{i}} - \text{Port forward points}_{\text{i-1}}/ 10000}{\text{USD/CNH}_{\text{i-1}}}`$
+2. Daily return is calculated as $` \text{Daily ret}_{\text{i}} = \frac{\text{Port forward points}_{\text{i}} - \text{Port forward points}_{\text{i-1}}/ 10000}{\text{USD/CNH}_{\text{i-1}}} `$
 
+#### Interpolation between each rebalancing date
+As the pair of forwards roll down from the current period to the next period, the tenor of the forward contract will be reduced and the forward curve would also change due to constant trading activity. To accurately compute the portfolio forward points for the entire period, an interpolation is needed to compute the forward points in between each rebalancing date. 
+
+The project adopts a cubic spline method to interpolate forward points between each month. In brief, by using 5M, 6M, 12M and 18M USD/CNH forward points, a piecewise polynomial is constructed for every calcualtion period to connect the data points. Since the polynomial is twice differentiable, it is possible to use the slope and the concavity (i.e. curvature) of the function to infer the interpolated value in between each tenor (i.e. between 18M and 12M vs. between 6M and 5M).
+
+After obtaining the interpolated forward points, the daily return for every period can then be calculated using the formula mentioned above.
 
 #### Target vol (volatility):
 An exponentially weighted model is used to compute the portfolio vol. The model adopts a 21-period lookback window and a smoothing factor of 2. 
-
-$`\text{Daily vol}_{\text{i}} = \sqrt{(1 - \frac{2}{N + 1}) * \text{Daily vol}^2_{\text{i-1}} + \frac{2}{N + 1} * \text{Simple vol}^2_{\text{i}}}`$
+$` \text{Daily vol}_{\text{i}} = \sqrt{(1 - \frac{2}{N + 1}) * \text{Daily vol}^2_{\text{i-1}} + \frac{2}{N + 1} * \text{Simple vol}^2_{\text{i}}}`$
 
 Where:
 - N: no. of periods in lookback window
-- i: current period
 - Simple vol: calculated using previous 21-days of daily return with sample standard deviation formula
 
-For standardization, daily vol is being annualized by multiplying $\sqrt{252}$.
+The initial period Daily vol is set to be equal to Simple vol in the same period. For standardization, daily vol computed via the exponentially weighted model is being annualized by multiplying $ \sqrt{252} $.
 
+
+### Step 3: Index value computation
 
 #### Notional:
-The portfolio vol is adjusted through leverage.
+The portfolio vol is adjusted through leverage, which is the ratio between target vol (i.e. 5%) and annualized vol. Note the annualized vol input to compute leverage is lagged by 2-periods to reflect T+2 settlement for FX transactions. The maximum allowed leverage is 15. During monthly rebalancing, if annualized vol is below target vol, leverage is applied to the portfolio, which determines the portfolio notional.
+
+$` \text{Port notional}_{\text{i}} = \text{Index value}_{\text{i-2}} * \text{Leverage ratio}_{\text{i}}`$
+
+Where:
+- $`\text{Leverage ratio}_{\text{i}} = \frac{0.05}{\text{Annualized vol}_{\text{i-2}}}`$
+
+#### Portfolio profit and loss (pnl):
+The daily portfolio pnl is determined based on notional and the daily return calculated using portfolio forward points as well as spot USD/CNH.
+
+$` \text{PnL}_{\text{i}} = \frac{\text{Port forward points}_{\text{i}} - \text{Port forward points}_{\text{i-1}}/ 10000}{\text{USD/CNH}_{\text{i-1}}} * \text{Port notional}_{\text{i}}`$
+
+#### Index value:
+Finally, the index value on each day is calcalued as below.
+
+$`\text{Index value}_{\text{i}} = \text{Index value}_{\text{i-1}} + \text{PnL}_{\text{i}} `$
+
+
