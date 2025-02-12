@@ -60,7 +60,9 @@ In the portfolio, there is NO delivery on rebalancing date, and the daily return
 1. The portfolio forward points are computed by taking the difference of forward points for the pair of 
     forwards. The formula is subject to the trade direction (i.e. RMB or USD strengths).
 
-2. Daily return is calculated as $` \text{Daily ret}_{\text{i}} = \frac{\text{Port forward points}_{\text{i}} - \text{Port forward points}_{\text{i-1}}/ 10000}{\text{USD/CNH}_{\text{i-1}}} `$
+2. Daily return is calculated as
+
+    $` \text{Daily ret}_{\text{i}} = \frac{\text{Port forward points}_{\text{i}} - \text{Port forward points}_{\text{i-1}}/ 10000}{\text{USD/CNH}_{\text{i-1}}} `$
 
 #### Interpolation between each rebalancing date
 As the pair of forwards roll down from the current period to the next period, the tenor of the forward contract will be reduced and the forward curve would also change due to constant trading activity. To accurately compute the portfolio forward points for the entire period, an interpolation is needed to compute the forward points in between each rebalancing date. 
@@ -71,6 +73,7 @@ After obtaining the interpolated forward points, the daily return for every peri
 
 #### Target vol (volatility):
 An exponentially weighted model is used to compute the portfolio vol. The model adopts a 21-period lookback window and a smoothing factor of 2. 
+
 $` \text{Daily vol}_{\text{i}} = \sqrt{(1 - \frac{2}{N + 1}) * \text{Daily vol}^2_{\text{i-1}} + \frac{2}{N + 1} * \text{Simple vol}^2_{\text{i}}}`$
 
 Where:
