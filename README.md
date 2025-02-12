@@ -64,7 +64,7 @@ In the portfolio, there is NO delivery on rebalancing date, and the daily return
 
     $` \text{Daily ret}_{\text{i}} = \frac{\text{Port forward points}_{\text{i}} - \text{Port forward points}_{\text{i-1}}/ 10000}{\text{USD/CNH}_{\text{i-1}}} `$
 
-#### Interpolation between each rebalancing date
+#### Interpolation between each rebalancing date:
 As the pair of forwards roll down from the current period to the next period, the tenor of the forward contract will be reduced and the forward curve would also change due to constant trading activity. To accurately compute the portfolio forward points for the entire period, an interpolation is needed to compute the forward points in between each rebalancing date. 
 
 The project adopts a cubic spline method to interpolate forward points between each month. In brief, by using 5M, 6M, 12M and 18M USD/CNH forward points, a piecewise polynomial is constructed for every calcualtion period to connect the data points. Since the polynomial is twice differentiable, it is possible to use the slope and the concavity (i.e. curvature) of the function to infer the interpolated value in between each tenor (i.e. between 18M and 12M vs. between 6M and 5M).
