@@ -25,7 +25,7 @@ To figure out if the portfolio should long or short forward contracts, it is imp
 #### Layer 1: 
 The first step is to compute the CPI difference between China and U.S. (i.e. China CPI - U.S. CPI) for every calendar months, the result are displayed in the 'CPI_diff' column in df (i.e. variable name in Python script). Next, the programme computes the exponential moving average (EMA) of CPI difference, which is applied using a 12-period lookback window and a smoothing factor of 2. The results are shown in 'EMA' column in df and the formula is given by
 
-$$\text{EMA}_{\text{i}} = \frac{2}{N + 1} * \text{CPI diff}_{\text{i}} + (1 - \frac{2}{N + 1}) * \text{CPI diff}_{\text{i-1}}  $$
+$$\text{EMA}_{\text{i}} = \frac{2}{N + 1} * \text{CPI diff}_{\text{i}} + (1 - \frac{2}{N + 1}) * \text{CPI diff}_{\text{i-1}}$$
 
 Where:
 - N: no. of periods in lookback window
@@ -60,19 +60,19 @@ In the portfolio, there is NO delivery on rebalancing date, and the daily return
 1. The portfolio forward points are computed by taking the difference of forward points for the pair of 
     forwards. The formula is subject to the trade direction (i.e. RMB or USD strengths).
 
-2. Daily return is calculated as $$ \text{Daily ret}_{\text{i}} = \frac{\text{Port forward points}_{\text{i}} - \text{Port forward points}_{\text{i-1}}/ 10000}{\text{USD/CNH}_{\text{i-1}}} $$
+2. Daily return is calculated as $$\text{Daily ret}_{\text{i}} = \frac{\text{Port forward points}_{\text{i}} - \text{Port forward points}_{\text{i-1}}/ 10000}{\text{USD/CNH}_{\text{i-1}}}$$
 
 
 #### Target vol (volatility):
 An exponentially weighted model is used to compute the portfolio vol. The model adopts a 21-period lookback window and a smoothing factor of 2. 
-$$ \text{Daily vol}_{\text{i}} = \sqrt{(1 - \frac{2}{N + 1}) * \text{Daily vol}^2_{\text{i-1}} + \frac{2}{N + 1} * \text{Simple vol}^2_{\text{i}}}$$
+$$\text{Daily vol}_{\text{i}} = \sqrt{(1 - \frac{2}{N + 1}) * \text{Daily vol}^2_{\text{i-1}} + \frac{2}{N + 1} * \text{Simple vol}^2_{\text{i}}}$$
 
 Where:
 - N: no. of periods in lookback window
 - i: current period
 - Simple vol: calculated using previous 21-days of daily return with sample standard deviation formula
 
-For standardization, daily vol is being annualized by multiplying $ \sqrt{252} $.
+For standardization, daily vol is being annualized by multiplying $\sqrt{252}$.
 
 
 #### Notional:
