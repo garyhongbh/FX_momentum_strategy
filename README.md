@@ -25,7 +25,7 @@ To figure out if the portfolio should long or short forward contracts, it is imp
 #### Layer 1: 
 The first step is to compute the CPI difference between China and U.S. (i.e. China CPI - U.S. CPI) for every calendar months, the result are displayed in the 'CPI_diff' column in df (i.e. variable name in Python script). Next, the programme computes the exponential moving average (EMA) of CPI difference, which is applied using a 12-period lookback window and a smoothing factor of 2. The results are shown in 'EMA' column in df and the formula is given by
 
-$$\text{EMA}_{\text{i}} = \frac{2}{N + 1} * \text{CPI diff}_{\text{i}} + (1 - \frac{2}{N + 1}) * \text{CPI diff}_{\text{i-1}}$$
+$\text{EMA}_{\text{i}} = \frac{2}{N + 1} * \text{CPI diff}_{\text{i}} + (1 - \frac{2}{N + 1}) * \text{CPI diff}_{\text{i-1}}$
 
 Where:
 - N: no. of periods in lookback window
