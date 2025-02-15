@@ -54,7 +54,7 @@ Over the month between each rebalancing, the long-dated forward will roll down f
 The return from L/S positions in forward contracts are reflected in forward points (forward points = forward rate - spot rate).
 
 Example:
-Suppose spot USD/CNH is 7.2 and the 1M USD/CNH forward rate is 7.3. For a long position in 1M USD/CNH forward (i.e. you deliver USD and receive CNH at contract expiration), if everything else remains the same, the long position is expected to gain 10 pips (a.k.a. basis points).
+Suppose spot USD/CNH is 7.2 and the 1M USD/CNH forward rate is 7.1. For a long position in 1M USD/CNH forward (i.e. you receive USD and deliver CNH at contract expiration), if everything else remains the same, the long position is expected to gain 10 pips (a.k.a. basis points).
 
 In the portfolio, there is NO delivery on rebalancing date, and the daily return are computed following the below methods:
 1. The portfolio forward points are computed by taking the difference of forward points for the pair of 
