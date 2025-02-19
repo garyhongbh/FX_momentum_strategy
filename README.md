@@ -46,7 +46,7 @@ Should the signal remains "Neutral", the analysis would move to the final layer.
 ### Step 2: Portfolio construction
 
 #### Composition:
-The portfolio composition is determiend by the signals from Step 1. When the signal shows "RMB Strengths", the portfolio will have a short position in long-dated USD/CNH forward (i.e. 18M) along with a long position in short-dated USD/CNH forward (i.e. 6M). When the signal shows "USD Strengths", the portfolio will have a long position in long-dated forward and a short position in short-dated forward.
+The portfolio composition is determiend by the signals from Step 1. When the signal shows "RMB Strengths", the portfolio will have a long position in long-dated USD/CNH forward (i.e. 18M) along with a short position in short-dated USD/CNH forward (i.e. 6M). When the signal shows "USD Strengths", the portfolio will have a short position in long-dated forward and a long position in short-dated forward.
 
 Over the month between each rebalancing, the long-dated forward will roll down from 18 months to 17 months, and the short-dated forward will roll down from 6 months to 5 months. On rebalancing date, if the signals remain the same the forward contracts will be rolled into a new pair of 18 months vs. 6 months forwards, otherwise, apart from rolling into a new pair of forwards the L/S direction will invert as well.
 
